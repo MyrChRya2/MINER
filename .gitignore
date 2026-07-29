@@ -14,3 +14,12 @@ export_credentials.cfg
 .mono/
 data_*/
 mono_crash.*.json
+
+# Addons
+addons/
+example/
+License/
+docs/
+tileset/
+source/
+shader/

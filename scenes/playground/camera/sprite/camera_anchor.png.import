@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cnacmi0ns5br"
-path="res://.godot/imported/player_sprite.png-c021d5ddc0c79509fe01a61008752fa2.ctex"
+uid="uid://bq7qb62854bv2"
+path="res://.godot/imported/camera_anchor.png-49212c28f74be402f4f6a7434c7bf46e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprits/player/player_sprite.png"
-dest_files=["res://.godot/imported/player_sprite.png-c021d5ddc0c79509fe01a61008752fa2.ctex"]
+source_file="res://scenes/playground/camera/sprite/camera_anchor.png"
+dest_files=["res://.godot/imported/camera_anchor.png-49212c28f74be402f4f6a7434c7bf46e.ctex"]
 
 [params]
 

@@ -1,42 +1,32 @@
 class_name PlayerStateFall extends PlayerState
 
 
-var fall_timer: float = 0.0
 var is_landing: bool = false
 
 func enter() -> void:
-	fall_timer = 0.0
-	is_landing = false
+	player.fall_timer = 0.0
 	player.player_anim.play("fall_start")
 	
 	
 func physics_process(_delta: float) -> PlayerState:
-	var move_dir = player.move_input
-	if move_dir != 0:
-		player.velocity.x = move_dir * player.DEFAULT_RUN_SPEED
-	else:
-		player.velocity.x = 0
-		
-	fall_timer += _delta
+	player.velocity.x = player.move_dir.x * player.DEFAULT_RUN_SPEED
 	
-	if Input.is_action_just_pressed("jump"):
+	if player.move_dir.y != 0 and not player.input_locked:
 		return get_node("../Jump")
 	
-	if not player.is_on_floor() and fall_timer > 0.2:
+	if player.velocity.y >= 0:
+		player.fall_timer += _delta
+	
+	if not player.is_on_floor() and player.fall_timer > 0.2:
 		if player.player_anim.animation == "fall_start":
 			player.player_anim.play("fall")
-		
+			
 	if player.is_on_floor():
-		var LANDING_THRESHOLD = 0.6
-		
-		if fall_timer > LANDING_THRESHOLD:
-			if not is_landing:
-				is_landing = true
-				var target_state = get_node("../Idle")
-				player.apply_animation_stun("fall_end", target_state)
-				return null
+		var LANDING_THRESHOLD: float = 0.5
+		if player.fall_timer >LANDING_THRESHOLD:
+			return get_node("../HardLand")
 		else:
-			if move_dir != 0:
+			if player.move_dir.x != 0:
 				return get_node("../Run")
 			else:
 				return get_node("../Idle")

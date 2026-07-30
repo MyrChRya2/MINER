@@ -2,7 +2,9 @@ class_name Player extends CharacterBody2D
 
 
 @onready var player_anim: AnimatedSprite2D = $PlayerAnim
+@onready var fall_timer_labe: Label = %FallTimerLabe
 
+var fall_timer: float = 0.0
 
 #region /// State Machine Variables
 
@@ -17,14 +19,18 @@ const BUFFER_STATES: Array[String] = ["Fall"]
 
 const DEFAULT_RUN_SPEED: float = 50
 const DEFAULT_GRAVITATIONAL_ACCELERATION: float = 980.0 * 0.5
-const DEFAULT_HOVER_SPEED: float = -80.0 
+const DEFAULT_HOVER_SPEED: float = 80.0 
 
 var is_falling_off_ledge: bool = false
 #endregion
 
-#全局锁
+# 全局锁
 var  input_locked: bool = false
-var move_input: float = 0.0
+var move_dir: Vector2 = Vector2.ZERO
+
+
+# 摄像机偏移
+@export var DEFAULT_CAMARA_SHIFT: float = 20.0
 
 
 func  _ready() -> void:
@@ -37,16 +43,22 @@ func _process(_delta: float) -> void:
 		var next_state = current_state.process(_delta)
 		if next_state != null:
 			change_state(next_state)
+			
+	fall_timer_labe.text = str(fall_timer).pad_decimals(2)
 	pass
 	
 	
 func _physics_process(_delta: float) -> void:
 	if input_locked:
-		move_input = 0.0
+		move_dir = Vector2.ZERO
 	else:
-		move_input = Input.get_axis("move_left", "move_right")
+		var input_h = Input.get_axis("move_left", "move_right")
+		var input_v = -1.0 if Input.is_action_pressed("jump") else 0.0
+		move_dir = Vector2(input_h, input_v)
 		
 	velocity.y += DEFAULT_GRAVITATIONAL_ACCELERATION * _delta
+	
+	velocity = velocity.round()
 	
 	move_and_slide()
 	
@@ -56,9 +68,17 @@ func _physics_process(_delta: float) -> void:
 		if next_state != null:
 			change_state(next_state)
 			
-	if player_anim:
-		if velocity.x != 0:
-			player_anim.flip_h = velocity.x > 0
+	position = position.round()
+			
+	if player_anim and velocity.x != 0:
+		player_anim.flip_h = velocity.x > 0
+		if has_node("PlayerAnchor"):
+			var anchor = get_node("PlayerAnchor")
+			if player_anim.flip_h:
+				anchor.position = Vector2(DEFAULT_CAMARA_SHIFT, 0)
+			else:
+				anchor.position = Vector2(-DEFAULT_CAMARA_SHIFT, 0)
+				
 	pass
 
 
@@ -100,16 +120,16 @@ func change_state(new_state:PlayerState) -> void:
 	current_state.enter()
 
 
-func apply_animation_stun(anim_name: String, target_state: PlayerState = null) -> void:
+func apply_animation_stun(duration: float, anim_name: String = "") -> void:
 	if input_locked:
 		return
 	
 	input_locked = true
-	player_anim.play(anim_name)
 	
-	await  player_anim.animation_finished
+	if anim_name != "":
+		player_anim.play(anim_name)
+	await  get_tree().create_timer(duration).timeout
 	
 	input_locked = false
 	
-	if target_state != null:
-		change_state(target_state)
+	change_state($States/Idle)

@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://cujmwn6fa0s18" path="res://scenes/player/player.tscn" id="5_yqvi2"]
 [ext_resource type="Script" uid="uid://314f11gt0k7p" path="res://scenes/playground/camera/script/main_camera.gd" id="6_pnqtf"]
 [ext_resource type="Texture2D" uid="uid://bq7qb62854bv2" path="res://scenes/playground/camera/sprite/camera_anchor.png" id="7_nnrk3"]
-[ext_resource type="Script" uid="uid://05adfekr7k5m" path="res://scenes/playground/debug_ui.gd" id="8_uis3y"]
+[ext_resource type="PackedScene" uid="uid://spn7kr13xhnt" path="res://dev_tools/debug_tools/debug_manager/debug_ui.tscn" id="8_uis3y"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_te8jg"]
 texture = ExtResource("2_nnrk3")
@@ -198,18 +198,4 @@ kd = 1.0
 [node name="Sprite2D" type="Sprite2D" parent="MainCamera/CameraAnchor" unique_id=1799939456]
 texture = ExtResource("7_nnrk3")
 
-[node name="DebugUI" type="CanvasLayer" parent="." unique_id=589761382]
-script = ExtResource("8_uis3y")
-
-[node name="Panel" type="Panel" parent="DebugUI" unique_id=1871790391]
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="DebugUI/Panel" unique_id=1131340240]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="InforLable0" type="Label" parent="DebugUI/Panel/VBoxContainer" unique_id=1985812036]
-layout_mode = 2
-theme_override_font_sizes/font_size = 8
+[node name="DebugUI" parent="." unique_id=266931556 instance=ExtResource("8_uis3y")]

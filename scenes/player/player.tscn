@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://d1rdisr1yyojp" path="res://scenes/player/states/jump.gd" id="8_qek5x"]
 [ext_resource type="Script" uid="uid://ced83ram3y5rl" path="res://scenes/player/states/hard_land.gd" id="9_5gtgg"]
 [ext_resource type="Texture2D" uid="uid://cubdhewuns744" path="res://scenes/playground/camera/sprite/player_anchor.png" id="10_h17s1"]
+[ext_resource type="Script" uid="uid://ditgofpm4rhxj" path="res://scenes/player/tool/drill.gd" id="10_je7p5"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qek5x"]
 atlas = ExtResource("1_oul6g")
@@ -215,28 +216,6 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_5m40n"]
 radius = 6.0
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_cnsyf"]
-atlas = ExtResource("2_dovo2")
-region = Rect2(0, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_007i1"]
-atlas = ExtResource("2_dovo2")
-region = Rect2(16, 0, 16, 16)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_6cv16"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_cnsyf")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_007i1")
-}],
-"loop": true,
-"name": &"enable",
-"speed": 20.0
-}]
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_6cv16"]
 atlas = ExtResource("4_0owmy")
 region = Rect2(0, 0, 16, 16)
@@ -273,28 +252,47 @@ animations = [{
 "speed": 20.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_4hvnv"]
+atlas = ExtResource("2_dovo2")
+region = Rect2(0, 3, 15, 13)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bbmj2"]
+atlas = ExtResource("2_dovo2")
+region = Rect2(16, 3, 15, 13)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kxw46"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4hvnv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bbmj2")
+}],
+"loop": true,
+"name": &"enable",
+"speed": 20.0
+}]
+
 [node name="Player" type="CharacterBody2D" unique_id=1479093848]
 script = ExtResource("1_gmlin")
 
 [node name="PlayerAnim" type="AnimatedSprite2D" parent="." unique_id=620905445]
+position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_ycdrs")
-animation = &"fall_end"
+animation = &"idle"
+frame = 3
+frame_progress = 0.096223466
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=405688864]
-position = Vector2(0, 2)
-shape = SubResource("CircleShape2D_5m40n")
-
-[node name="DrillAnimate" type="AnimatedSprite2D" parent="." unique_id=1316692292]
 visible = false
-position = Vector2(-9, 1)
-sprite_frames = SubResource("SpriteFrames_6cv16")
-animation = &"enable"
-frame_progress = 0.8740414
+position = Vector2(0, -6)
+shape = SubResource("CircleShape2D_5m40n")
 
 [node name="FireBootsAnim" type="AnimatedSprite2D" parent="." unique_id=1695968264]
 unique_name_in_owner = true
 visible = false
-position = Vector2(0, 16)
+position = Vector2(0, 8)
 sprite_frames = SubResource("SpriteFrames_iqsei")
 animation = &"enable"
 frame_progress = 0.29025307
@@ -309,6 +307,7 @@ script = ExtResource("5_p47bc")
 
 [node name="Fall" type="Node" parent="States" unique_id=2027206088]
 script = ExtResource("6_75vfm")
+LANDING_THRESHOLD = 0.8
 
 [node name="Jump" type="Node" parent="States" unique_id=86421041]
 script = ExtResource("8_qek5x")
@@ -316,15 +315,22 @@ script = ExtResource("8_qek5x")
 [node name="HardLand" type="Node" parent="States" unique_id=828513201]
 script = ExtResource("9_5gtgg")
 
-[node name="FallTimerLabe" type="Label" parent="." unique_id=915105769]
-unique_name_in_owner = true
-offset_left = -48.0
-offset_top = -12.0
-offset_right = -8.0
-offset_bottom = 11.0
-
 [node name="PlayerAnchor" type="Marker2D" parent="." unique_id=406141683]
+visible = false
 gizmo_extents = 0.0
 
 [node name="Sprite2D" type="Sprite2D" parent="PlayerAnchor" unique_id=1083955740]
 texture = ExtResource("10_h17s1")
+
+[node name="Tool" type="Node2D" parent="." unique_id=68251708]
+
+[node name="Drill" type="Node2D" parent="Tool" unique_id=1823853748]
+script = ExtResource("10_je7p5")
+show_when_select = false
+
+[node name="DrillAnim" type="AnimatedSprite2D" parent="Tool/Drill" unique_id=603080094]
+unique_name_in_owner = true
+position = Vector2(-10, -6)
+sprite_frames = SubResource("SpriteFrames_kxw46")
+animation = &"enable"
+frame_progress = 0.69769806

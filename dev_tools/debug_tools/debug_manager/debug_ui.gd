@@ -8,7 +8,7 @@ var _label_map: Dictionary = {}
 
 
 func _ready() -> void:
-	visible = true
+	visible = false
 	_sync_all_data()
 	
 	

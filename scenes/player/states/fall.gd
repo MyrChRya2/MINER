@@ -2,6 +2,7 @@ class_name PlayerStateFall extends PlayerState
 
 
 var is_landing: bool = false
+@export var LANDING_THRESHOLD: float = 0.5
 
 func enter() -> void:
 	player.fall_timer = 0.0
@@ -22,7 +23,6 @@ func physics_process(_delta: float) -> PlayerState:
 			player.player_anim.play("fall")
 			
 	if player.is_on_floor():
-		var LANDING_THRESHOLD: float = 0.5
 		if player.fall_timer >LANDING_THRESHOLD:
 			return get_node("../HardLand")
 		else:

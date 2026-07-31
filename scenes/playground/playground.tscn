@@ -194,6 +194,7 @@ script = ExtResource("6_pnqtf")
 kd = 1.0
 
 [node name="CameraAnchor" type="Marker2D" parent="MainCamera" unique_id=877006749]
+visible = false
 
 [node name="Sprite2D" type="Sprite2D" parent="MainCamera/CameraAnchor" unique_id=1799939456]
 texture = ExtResource("7_nnrk3")

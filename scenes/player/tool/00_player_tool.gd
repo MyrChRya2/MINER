@@ -8,20 +8,24 @@ class_name PlayerTool extends Node2D
 var is_active: bool = false
 var is_using: bool = false
 
+
 func activate() -> void:
 	is_active = true
 	if show_when_select:
-		visible = true	
+		visible = true
 	
 	
 func deactivate() -> void:
 	is_active = false
 	visible = false
-	
 	if is_using:
 		stop_use()
 		
 		
+func can_use(_player: Player) -> bool:
+	return true
+	
+	
 func start_use() -> void:
 	if not is_active or is_using:
 		return

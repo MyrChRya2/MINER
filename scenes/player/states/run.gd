@@ -18,5 +18,7 @@ func physics_process(_delta: float) -> PlayerState:
 	if not player.is_on_floor() and player.velocity.y >= 0:
 		player.is_falling_off_ledge = true
 		return get_node("../Fall")
-
+	
+	if player.is_on_wall():
+		player.player_anim.stop()
 	return null

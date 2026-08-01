@@ -23,9 +23,9 @@ var tool_list: Array[PlayerTool] = []
 
 #region /// 物理参数
 
-const DEFAULT_RUN_SPEED: float = 50
-const DEFAULT_GRAVITATIONAL_ACCELERATION: float = 980.0 * 0.2
-const DEFAULT_HOVER_SPEED: float = 60.0 
+const DEFAULT_RUN_SPEED: float = 100.0
+const DEFAULT_GRAVITATIONAL_ACCELERATION: float = 980.0 * 0.4
+const DEFAULT_HOVER_SPEED: float = 120.0 
 
 var is_falling_off_ledge: bool = false
 
@@ -58,6 +58,10 @@ func _process(_delta: float) -> void:
 	
 	_handle_tool_input()
 	
+	tool_list[current_tool_index].process(_delta)
+	if not tool_list.is_empty():
+		tool_list[current_tool_index].update_facing(facing_right)
+		
 	pass
 	
 	
@@ -73,7 +77,6 @@ func _physics_process(_delta: float) -> void:
 	
 	velocity = velocity.round()
 	
-	move_and_slide()
 	
 	if current_state:
 		var next_state = current_state.physics_process(_delta)
@@ -134,6 +137,7 @@ func change_state(new_state:PlayerState) -> void:
 		
 		
 func _handle_tool_input() -> void:
+	var tool = tool_list[current_tool_index] if not tool_list.is_empty() else null
 	#if Input.is_action_just_pressed("next_tool"):
 		#switch_tool(1)
 	#elif Input.is_action_just_pressed("prev_tool"):
@@ -144,9 +148,13 @@ func _handle_tool_input() -> void:
 			push_error("使用工具失败: 当前没有可用工具")
 			return
 			
-		var tool = tool_list[current_tool_index]
 		if not tool.is_active:
 			push_error("使用工具失败: 当前工具未激活 (索引 %d)" % current_tool_index)
+			return
+		
+		if not tool.can_use(self):
+			if tool.is_using:
+				tool.stop_use()
 			return
 			
 		tool.start_use()
@@ -154,10 +162,12 @@ func _handle_tool_input() -> void:
 	else:
 		if not tool_list.is_empty() and current_tool_index < tool_list.size():
 			tool_list[current_tool_index].stop_use()
+			
 		
-	if Input.is_action_just_pressed("down") or Input.is_action_just_released("down"):
-		if not tool_list.is_empty() and current_tool_index < tool_list.size():
-			tool_list[current_tool_index].handle_down_input(Input.is_action_pressed("down"), facing_right)
+		
+	#if Input.is_action_just_pressed("down") or Input.is_action_just_released("down"):
+		#if not tool_list.is_empty() and current_tool_index < tool_list.size():
+			#tool_list[current_tool_index].handle_down_input(Input.is_action_pressed("down"), facing_right)
 	pass
 		
 

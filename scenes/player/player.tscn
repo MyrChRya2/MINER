@@ -252,22 +252,22 @@ animations = [{
 "speed": 20.0
 }]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_4hvnv"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_cnsyf"]
 atlas = ExtResource("2_dovo2")
-region = Rect2(0, 3, 15, 13)
+region = Rect2(0, 4, 32, 11)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_bbmj2"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_007i1"]
 atlas = ExtResource("2_dovo2")
-region = Rect2(16, 3, 15, 13)
+region = Rect2(0, 20, 32, 11)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_kxw46"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_4hvnv")
+"texture": SubResource("AtlasTexture_cnsyf")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_bbmj2")
+"texture": SubResource("AtlasTexture_007i1")
 }],
 "loop": true,
 "name": &"enable",
@@ -330,7 +330,7 @@ show_when_select = false
 
 [node name="DrillAnim" type="AnimatedSprite2D" parent="Tool/Drill" unique_id=603080094]
 unique_name_in_owner = true
-position = Vector2(-10, -6)
+position = Vector2(0, -7)
 sprite_frames = SubResource("SpriteFrames_kxw46")
 animation = &"enable"
-frame_progress = 0.69769806
+frame_progress = 0.71114194
